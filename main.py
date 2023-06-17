@@ -1,9 +1,15 @@
 import serial
-import sys
 import click
 
-def main():
-    ser_port = serial.Serial('/dev/ttyUSB0', 115200)
+
+@click.command()
+@click.option('--port', '-p',
+              prompt='Serial device',
+              help='Enter serial device to listen to, e.g. /dev/ttyUSB0',
+              required=True)
+@click.option('--baud', '-b', prompt='Baudrate', help='Set a baudrate, e.g. 115200', type=int)
+def start_serial(port, baud):
+    ser_port = serial.Serial(port, baud)
 
     try:
         while True:
@@ -15,7 +21,3 @@ def main():
 
     finally:
         ser_port.close()
-
-
-if __name__ == '__main__':
-    main()
